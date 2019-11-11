@@ -58,8 +58,8 @@ public class ImageDetection extends Activity implements CameraBridgeViewBase.CvC
     Mat descript2,descript1;
     Mat image1;
     MatOfKeyPoint keypoints1,keypoints2;
-    int count = 0;
-    int sum = 0;
+    private int count = 0;
+    private int sum = 0;
     static {
         if (!OpenCVLoader.initDebug())
             Log.d("ERROR", "Unable to load OpenCV");
@@ -106,7 +106,7 @@ public class ImageDetection extends Activity implements CameraBridgeViewBase.CvC
         Bitmap bitmap = BitmapFactory.decodeStream(istr);
         // Converting the bitmap to Mat (matrix class)
         Utils.bitmapToMat(bitmap, image1);
-        Imgproc.cvtColor(image1, image1, Imgproc.COLOR_RGB2GRAY);
+        Imgproc.cvtColor(image1, image1, Imgproc.COLOR_BGR2HSV); // COLOR_RGB2GRAY
         image1.convertTo(image1, 0); //converting the image to match with the type of the cameras image
         descript1 = new Mat();
         keypoints1 = new MatOfKeyPoint();
@@ -178,7 +178,7 @@ public class ImageDetection extends Activity implements CameraBridgeViewBase.CvC
 
     public Mat recognize(Mat aInputFrame) {
         // Converting images to grayscale (Colors make discerning edges and features more complicated)
-        Imgproc.cvtColor(aInputFrame, aInputFrame, Imgproc.COLOR_RGB2GRAY);
+        Imgproc.cvtColor(aInputFrame, aInputFrame, Imgproc.COLOR_BGR2HSV); // COLOR_RGB2GRAY
         descript2 = new Mat();
         keypoints2 = new MatOfKeyPoint();
         detector.detect(aInputFrame, keypoints2);
